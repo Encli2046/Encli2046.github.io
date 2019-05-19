@@ -3,6 +3,8 @@ const ap = new APlayer({
     autoplay: true,
     fixed: true,
     theme: '#FADFA3',
+    mutex: false,
+    lrcType: 0,
     audio: [
 			     
 		      {
