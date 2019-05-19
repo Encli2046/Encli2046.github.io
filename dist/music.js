@@ -10,7 +10,7 @@ const ap = new APlayer({
 		      {
 		        name: "Cahaba",
 		        artist: 'Southern',
-		        url: 'http://m10.music.126.net/20190519150806/2553a32fda57d2ed12e53eb75af65693/ymusic/012e/35a5/e394/593d18eef019ecb73053e417bc944f40.mp3',
+		        url: 'http://fs.open.kugou.com/33ca8e634137a779191c5cf54f29f859/5ce102d9/G108/M05/1A/05/DIcBAFvb42-AJRXiAFU5p4yq5M4749.mp3',
 		        cover: 'http://p2.music.126.net/XiakUZxbbUmY_V2q6ELAcw==/5850501371416747.jpg',
 		      },
 		      {
