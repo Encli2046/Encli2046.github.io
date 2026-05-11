@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryList from '../../components/EntryList.astro';
+import { publicEntries } from '../../lib/content';
+
+const notes = publicEntries(await getCollection('notes'));
+---
+
+<BaseLayout title="notes" description="生活感悟、读书摘记和主观札记。">
+  <section class="prose">
+    <p class="eyebrow">notes</p>
+    <h1>札记</h1>
+    <p class="lead">这里收纳生活感悟和主观判断，不和事实资讯混在一起。</p>
+  </section>
+  <section class="section">
+    <EntryList entries={notes} />
+  </section>
+</BaseLayout>

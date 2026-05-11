@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentHeader from '../../components/ContentHeader.astro';
+import SourceList from '../../components/SourceList.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('briefs', ({ data }) => !data.draft);
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <article class="prose">
+    <ContentHeader
+      title={entry.data.title}
+      description={entry.data.description}
+      date={entry.data.date}
+      category={entry.data.category}
+      tags={entry.data.tags}
+      sourceType={entry.data.sourceType}
+    />
+    <Content />
+    <SourceList sources={entry.data.sources} />
+  </article>
+</BaseLayout>

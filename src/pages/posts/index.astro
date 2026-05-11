@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryList from '../../components/EntryList.astro';
+import { publicEntries } from '../../lib/content';
+
+const posts = publicEntries(await getCollection('posts'));
+---
+
+<BaseLayout title="posts" description="Encli2046 的文章索引。">
+  <section class="prose">
+    <p class="eyebrow">posts</p>
+    <h1>文章</h1>
+    <p class="lead">长文、技术观察和主题整理会从这里进入。</p>
+  </section>
+  <section class="section">
+    <EntryList entries={posts} />
+  </section>
+</BaseLayout>

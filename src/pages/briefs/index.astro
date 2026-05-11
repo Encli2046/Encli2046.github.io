@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EntryList from '../../components/EntryList.astro';
+import { publicEntries } from '../../lib/content';
+
+const briefs = publicEntries(await getCollection('briefs'));
+---
+
+<BaseLayout title="briefs" description="带来源的互联网行业与技术资讯短文。">
+  <section class="prose">
+    <p class="eyebrow">briefs</p>
+    <h1>资讯短文</h1>
+    <p class="lead">每条资讯都保留来源，先记录事实，再写判断。</p>
+  </section>
+  <section class="section">
+    <EntryList entries={briefs} />
+  </section>
+</BaseLayout>

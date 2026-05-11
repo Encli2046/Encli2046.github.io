@@ -1,0 +1,24 @@
+---
+import { entryUrl, formatDate, type SiteEntry } from '../lib/content';
+
+interface Props {
+  entries: SiteEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<div class="entry-list">
+  {
+    entries.map((entry) => (
+      <a class="entry-row" href={entryUrl(entry.collection, entry.id)}>
+        <span class="entry-date">{formatDate(entry.data.date)}</span>
+        <span>
+          <span class="entry-title">{entry.data.title}</span>
+          <p class="entry-desc">{entry.data.description}</p>
+        </span>
+        <span class="entry-kind">{entry.collection}</span>
+      </a>
+    ))
+  }
+</div>
