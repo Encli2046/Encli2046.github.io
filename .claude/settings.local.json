@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npx astro *)",
+      "Bash(python3 -c ' *)",
+      "WebFetch(domain:github.com)",
+      "Bash(ls /tmp/bookworm-light-astro/src/ 2>/dev/null && echo \"--- OK ---\" || echo \"还在克隆中...\")",
+      "Read(//tmp/bookworm-light-astro/**)",
+      "Bash(find /tmp/bookworm-light-astro/src -type f | sort)",
+      "Read(//private/tmp/bookworm-light-astro/src/**)",
+      "Bash(cp -r /tmp/bookworm-light-astro/src/layouts /Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/)",
+      "Bash(cp -r /tmp/bookworm-light-astro/src/styles /Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/)",
+      "Bash(cp -r /tmp/bookworm-light-astro/src/lib /Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/)",
+      "Bash(cp -r /tmp/bookworm-light-astro/src/config /Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/)",
+      "Bash(cp -r /tmp/bookworm-light-astro/src/tailwind-plugin /Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/)",
+      "Bash(rm -f src/pages/contact.astro src/pages/authors/\\\\[single\\\\].astro src/pages/authors/index.astro src/pages/authors/page/\\\\[slug\\\\].astro src/pages/\\\\[regular\\\\].astro && rmdir src/pages/authors/page src/pages/authors 2>/dev/null; echo \"已清理不需要的页面\")",
+      "Bash(sudo chown -R 501:20 \"/Users/encli/.npm\")",
+      "Bash(rm -f \"/Users/encli/.npm/_cacache/content-v2/sha512/06/44/790e4ca95c94803f7cbf867c45d360f3f99125bbd52254ca99e344f5d2eb7fc1cc54a613d6acff03e7aff6b5fe73c3f21b66325e774bf26bf967bc26f788\" 2>&1 && echo \"done\" || echo \"permission denied\")"
+    ],
+    "additionalDirectories": [
+      "/Users/encli/Documents/GitHub/Encli2046/Encli2046.github.io/src/pages/authors",
+      "/Users/encli/.npm/_cacache/content-v2/sha512/06/44"
+    ]
+  }
+}

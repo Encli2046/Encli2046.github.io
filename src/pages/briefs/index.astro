@@ -1,19 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import EntryList from '../../components/EntryList.astro';
-import { publicEntries } from '../../lib/content';
+import Base from "@/layouts/Base.astro";
+import Posts from "@/components/Posts.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
 
-const briefs = publicEntries(await getCollection('briefs'));
+const briefs = sortByDate(await getSinglePage("briefs"));
 ---
 
-<BaseLayout title="briefs" description="带来源的互联网行业与技术资讯短文。">
-  <section class="prose">
-    <p class="eyebrow">briefs</p>
-    <h1>资讯短文</h1>
-    <p class="lead">每条资讯都保留来源，先记录事实，再写判断。</p>
-  </section>
+<Base title="简报" description="带来源的互联网行业与技术资讯短文。">
   <section class="section">
-    <EntryList entries={briefs} />
+    <div class="container">
+      <div class="row justify-center">
+        <div class="md:col-10 text-center">
+          <h1 class="h2 mb-4">资讯短文</h1>
+          <p class="text-text mb-8">每条资讯都保留来源，先记录事实，再写判断。</p>
+        </div>
+      </div>
+      <Posts posts={briefs} className="mb-16" fluid={false} basePath="/briefs" />
+    </div>
   </section>
-</BaseLayout>
+</Base>

@@ -1,58 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import EntryList from '../components/EntryList.astro';
-import { publicEntries } from '../lib/content';
+import Posts from "@/components/Posts.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import Pagination from "@/layouts/components/Pagination.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
 
-const posts = publicEntries(await getCollection('posts'));
-const timeline = publicEntries(await getCollection('timeline'));
-const briefs = publicEntries(await getCollection('briefs'));
-const notes = publicEntries(await getCollection('notes'));
-const latest = publicEntries([...posts, ...timeline, ...briefs, ...notes]).slice(0, 6);
+const posts = await getSinglePage("posts");
+const sortedPosts = sortByDate(posts);
+const totalPages = Math.ceil(posts.length / config.settings.pagination);
+const currentPosts = sortedPosts.slice(0, config.settings.pagination);
 ---
 
-<BaseLayout title="home" description="Encli2046 的个人互联网观察、技术记录与生活札记。">
-  <section class="hero">
-    <div>
-      <h1>记录互联网、技术与生活的长期线索。</h1>
-      <p class="lead">
-        事实保留来源，观点保留边界。这里收集行业变化、技术脉络和生活里的长期感受。
-      </p>
-    </div>
-  </section>
-
+<Base>
   <section class="section">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">latest</p>
-        <h2>最近更新</h2>
-      </div>
-      <p>按时间沉淀资料，按主题整理判断。</p>
-    </div>
-    <EntryList entries={latest} />
-  </section>
-
-  <section class="section two-col">
-    <div>
-      <p class="eyebrow">operating model</p>
-      <h2>内容生产规则</h2>
-      <p class="lead">
-        资料先结构化，再写成文章。事实、判断和感受各自归位。
-      </p>
-    </div>
-    <div class="stat-grid">
-      <div class="stat">
-        <strong>01</strong>
-        资料类内容发布前必须有来源链接。
-      </div>
-      <div class="stat">
-        <strong>02</strong>
-        年度时间线按年份沉淀，先结构化，再写文章。
-      </div>
-      <div class="stat">
-        <strong>03</strong>
-        生活札记保留主观性，不伪装成行业事实。
-      </div>
+    <div class="container">
+      <Posts posts={currentPosts} className="mb-16" />
+      <Pagination currentPage={1} totalPages={totalPages} />
     </div>
   </section>
-</BaseLayout>
+</Base>

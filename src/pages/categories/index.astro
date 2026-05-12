@@ -1,0 +1,35 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { humanize } from "@/lib/utils/textConverter";
+import { BiCategoryAlt } from "react-icons/bi";
+
+const postsCats = await getTaxonomy("posts", "categories");
+const briefsCats = await getTaxonomy("briefs", "categories");
+const notesCats = await getTaxonomy("notes", "categories");
+const timelineCats = await getTaxonomy("timeline", "categories");
+const categories = [...new Set([...postsCats, ...briefsCats, ...notesCats, ...timelineCats])].sort();
+---
+
+<Base title={"分类"}>
+  <section class="section">
+    <div class="container text-center">
+      <h1 class="h2 page-heading">分类</h1>
+      <ul class="space-x-4">
+        {
+          categories.map((category) => (
+            <li class="inline-block">
+              <a
+                href={`/categories/${category}`}
+                class="rounded-lg bg-light px-4 py-2 text-dark transition hover:bg-primary hover:text-white flex items-center group"
+              >
+                <BiCategoryAlt className="mr-1 text-primary group-hover:text-white transition h-6 w-6 scale-75" />
+                {humanize(category || "")}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
