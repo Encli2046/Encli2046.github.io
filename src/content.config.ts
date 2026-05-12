@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 
 const sourceSchema = z.object({
   title: z.string(),
-  url: z.string().url(),
+  url: z.url(),
   publisher: z.string(),
   accessed: z.coerce.date(),
 });

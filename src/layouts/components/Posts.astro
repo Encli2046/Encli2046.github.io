@@ -6,8 +6,14 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
 
+type PostListEntry =
+  | CollectionEntry<"posts">
+  | CollectionEntry<"briefs">
+  | CollectionEntry<"notes">
+  | CollectionEntry<"timeline">;
+
 type Props = {
-  posts: any[];
+  posts: PostListEntry[];
   className?: string;
   fluid?: boolean;
   basePath?: string;
@@ -42,7 +48,7 @@ const { className, posts, fluid, basePath = "/blog" } = Astro.props;
             {authors
               .filter((author) =>
                 post.data.authors
-                  .map((author) => slugify(author))
+                  .map((author: string) => slugify(author))
                   .includes(slugify(author.data.title))
               )
               .map((author) => (
@@ -71,7 +77,7 @@ const { className, posts, fluid, basePath = "/blog" } = Astro.props;
             <BiCategoryAlt className="mr-1 h-[18px] w-[18px] text-gray-600" />
 
             <ul>
-              {post.data.categories.map((category, i: number) => (
+              {post.data.categories.map((category: string, i: number) => (
                 <li class="inline-block">
                   <a
                     href={`/categories/${slugify(category)}`}
