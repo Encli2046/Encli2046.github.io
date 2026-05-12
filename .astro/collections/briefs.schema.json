@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "meta_title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "image": {
+      "type": "string"
+    },
+    "categories": {
+      "default": [
+        "资讯"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authors": {
+      "default": [
+        "Encli"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "default": [
+        "others"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "draft": {
+      "type": "boolean"
+    },
+    "sourceType": {
+      "default": "资料整理",
+      "type": "string",
+      "enum": [
+        "原创",
+        "资料整理",
+        "观点札记"
+      ]
+    },
+    "sources": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publisher": {
+            "type": "string"
+          },
+          "accessed": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "publisher",
+          "accessed"
+        ]
+      }
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "sources"
+  ]
+}
