@@ -1,0 +1,39 @@
+{
+  "site": {
+    "title": "Encli2046",
+    "base_url": "https://encli2046.github.io",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/favicon.ico",
+    "logo": "/images/logo.png",
+    "logo_width": "200",
+    "logo_height": "34",
+    "logo_text": "Encli2046"
+  },
+
+  "settings": {
+    "pagination": 9
+  },
+
+  "metadata": {
+    "meta_author": "Encli",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "记录互联网、技术与生活的长期线索。事实保留来源，观点保留边界。"
+  },
+
+  "google_tag_manager": {
+    "enable": false,
+    "gtm_id": ""
+  },
+
+  "params": {
+    "contact_form_action": "#",
+    "copyright": "© 2026 Encli2046 · 事实保留来源，观点保留边界"
+  },
+
+  "contactinfo": {
+    "address": "",
+    "email": "",
+    "phone": ""
+  }
+}

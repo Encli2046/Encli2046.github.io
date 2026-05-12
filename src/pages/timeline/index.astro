@@ -1,0 +1,22 @@
+---
+import Base from "@/layouts/Base.astro";
+import Posts from "@/components/Posts.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+
+const timelines = sortByDate(await getSinglePage("timeline"));
+---
+
+<Base title="时间线" description="从 2017 年开始整理互联网行业与主流技术时间线。">
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="md:col-10 text-center">
+          <h1 class="h2 mb-4">互联网时间线</h1>
+          <p class="text-text mb-8">每一年先沉淀结构化资料，再生成年度回顾和专题文章。</p>
+        </div>
+      </div>
+      <Posts posts={timelines} className="mb-16" fluid={false} basePath="/timeline" />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,61 @@
+{
+  "main": [
+    {
+      "name": "首页",
+      "url": "/"
+    },
+    {
+      "name": "文章",
+      "url": "/blog"
+    },
+    {
+      "name": "内容",
+      "url": "",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "简报",
+          "url": "/briefs"
+        },
+        {
+          "name": "札记",
+          "url": "/notes"
+        },
+        {
+          "name": "时间线",
+          "url": "/timeline"
+        },
+        {
+          "name": "标签",
+          "url": "/tags"
+        },
+        {
+          "name": "分类",
+          "url": "/categories"
+        }
+      ]
+    },
+    {
+      "name": "关于",
+      "url": "/about"
+    }
+  ],
+  "footer": [
+    {
+      "name": "文章",
+      "url": "/blog"
+    },
+    {
+      "name": "简报",
+      "url": "/briefs"
+    },
+    {
+      "name": "时间线",
+      "url": "/timeline"
+    },
+    {
+      "name": "关于",
+      "url": "/about"
+    }
+  ]
+}

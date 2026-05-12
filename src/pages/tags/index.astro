@@ -1,0 +1,84 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { humanize, slugify } from "@/lib/utils/textConverter";
+import dateFormat from "@/lib/utils/dateFormat";
+import { FaHashtag } from "react-icons/fa";
+
+const postsTags = await getTaxonomy("posts", "tags");
+const briefsTags = await getTaxonomy("briefs", "tags");
+const notesTags = await getTaxonomy("notes", "tags");
+const timelineTags = await getTaxonomy("timeline", "tags");
+const tags = [...new Set([...postsTags, ...briefsTags, ...notesTags, ...timelineTags])].sort();
+
+const sources = [
+  { name: "文章", entries: await getSinglePage("posts") },
+  { name: "简报", entries: await getSinglePage("briefs") },
+  { name: "札记", entries: await getSinglePage("notes") },
+  { name: "时间线", entries: await getSinglePage("timeline") },
+];
+
+const tagStats = tags
+  .map((tag) => {
+    const matched = sources.flatMap((source) =>
+      source.entries
+        .filter((entry: any) => entry.data.tags?.map((item: string) => slugify(item)).includes(tag))
+        .map((entry: any) => ({ ...entry, _sourceName: source.name })),
+    );
+    const sourceNames = [...new Set(matched.map((entry: any) => entry._sourceName))];
+    const latestDate = matched
+      .map((entry: any) => entry.data.date)
+      .filter(Boolean)
+      .sort((a: Date, b: Date) => new Date(b).getTime() - new Date(a).getTime())[0];
+
+    return {
+      tag,
+      title: humanize(tag || ""),
+      count: matched.length,
+      sourceNames,
+      latestDate,
+    };
+  })
+  .sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+---
+
+<Base title={"标签"}>
+  <section class="section">
+    <div class="container">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-primary">内容索引</p>
+        <h1 class="h2 page-heading">标签</h1>
+        <p class="text-text">
+          这里按主题整理博客、简报、札记和时间线内容。每个标签都能看到关联数量、最近更新和内容来源。
+        </p>
+      </div>
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          tagStats.map((item) => (
+            <article class="rounded-lg border border-border bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+              <a
+                href={`/tags/${item.tag}`}
+                class="mb-4 flex items-center text-lg font-semibold text-dark transition hover:text-primary"
+              >
+                <FaHashtag className="mr-2 text-primary" />
+                {item.title}
+              </a>
+              <div class="mb-4 flex flex-wrap gap-2 text-sm">
+                <span class="rounded bg-light px-3 py-1 text-dark">{item.count} 篇相关内容</span>
+                {item.latestDate && (
+                  <span class="rounded bg-light px-3 py-1 text-text">
+                    最近：{dateFormat(item.latestDate, "yyyy-MM-dd")}
+                  </span>
+                )}
+              </div>
+              <p class="text-sm text-text">
+                来源：{item.sourceNames.length > 0 ? item.sourceNames.join("、") : "暂无"}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>

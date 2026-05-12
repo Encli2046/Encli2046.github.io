@@ -1,0 +1,22 @@
+---
+import Base from "@/layouts/Base.astro";
+import Posts from "@/components/Posts.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+
+const notes = sortByDate(await getSinglePage("notes"));
+---
+
+<Base title="札记" description="生活感悟、读书摘记和主观札记。">
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="md:col-10 text-center">
+          <h1 class="h2 mb-4">札记</h1>
+          <p class="text-text mb-8">这里收纳生活感悟和主观判断，不和事实资讯混在一起。</p>
+        </div>
+      </div>
+      <Posts posts={notes} className="mb-16" fluid={false} basePath="/notes" />
+    </div>
+  </section>
+</Base>

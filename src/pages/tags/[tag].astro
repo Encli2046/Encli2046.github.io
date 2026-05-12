@@ -1,0 +1,94 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import taxonomyFilter from "@/lib/utils/taxonomyFilter";
+import { humanize, plainify, slugify } from "@/lib/utils/textConverter";
+import dateFormat from "@/lib/utils/dateFormat";
+
+export async function getStaticPaths() {
+  const allTags = [
+    ...(await getTaxonomy("posts", "tags")),
+    ...(await getTaxonomy("briefs", "tags")),
+    ...(await getTaxonomy("notes", "tags")),
+    ...(await getTaxonomy("timeline", "tags")),
+  ];
+  return [...new Set(allTags)].map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+
+const posts = await getSinglePage("posts");
+const briefs = await getSinglePage("briefs");
+const notes = await getSinglePage("notes");
+const timeline = await getSinglePage("timeline");
+
+const allEntries = sortByDate([
+  ...taxonomyFilter(posts, "tags", tag!).map((e: any) => ({ ...e, _url: `/blog/${e.id}`, _type: "文章" })),
+  ...taxonomyFilter(briefs, "tags", tag!).map((e: any) => ({ ...e, _url: `/briefs/${e.id}`, _type: "简报" })),
+  ...taxonomyFilter(notes, "tags", tag!).map((e: any) => ({ ...e, _url: `/notes/${e.id}`, _type: "札记" })),
+  ...taxonomyFilter(timeline, "tags", tag!).map((e: any) => ({ ...e, _url: `/timeline/${e.id}`, _type: "时间线" })),
+]);
+
+const title = humanize(tag || "");
+const typeStats = [...new Set(allEntries.map((entry: any) => entry._type))].map((type) => ({
+  type,
+  count: allEntries.filter((entry: any) => entry._type === type).length,
+}));
+const latestDate = allEntries
+  .map((entry: any) => entry.data.date)
+  .filter(Boolean)
+  .sort((a: Date, b: Date) => new Date(b).getTime() - new Date(a).getTime())[0];
+---
+
+<Base title={title || "Tag"}>
+  <div class="section">
+    <div class="container">
+      <div class="mx-auto mb-12 max-w-3xl text-center">
+        <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-primary">标签筛选</p>
+        <h1 class="h2 mb-5 text-primary">#{title}</h1>
+        <p class="text-text">
+          共收录 {allEntries.length} 篇相关内容
+          {latestDate && <>，最近更新于 {dateFormat(latestDate, "yyyy-MM-dd")}</>}。
+        </p>
+      </div>
+      <div class="mb-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {typeStats.map((item) => (
+          <div class="rounded-lg border border-border bg-light p-5 text-center">
+            <p class="mb-2 text-3xl font-bold text-dark">{item.count}</p>
+            <p class="text-sm text-text">{item.type}</p>
+          </div>
+        ))}
+      </div>
+      <div class="grid gap-6 lg:grid-cols-2">
+        {allEntries.map((entry: any) => (
+          <article class="rounded-lg border border-border bg-white p-6 shadow-sm">
+            <div class="mb-4 flex flex-wrap items-center gap-2 text-sm text-text">
+              <span class="rounded bg-light px-3 py-1 text-dark">{entry._type}</span>
+              {entry.data.date && <span>{dateFormat(entry.data.date, "yyyy-MM-dd")}</span>}
+              {entry.data.categories?.map((category: string) => (
+                <a href={`/categories/${slugify(category)}`} class="rounded bg-light px-3 py-1 transition hover:text-primary">
+                  {category}
+                </a>
+              ))}
+            </div>
+            <h2 class="h4 mb-4">
+              <a href={entry._url} class="block hover:text-primary transition duration-300">
+                {entry.data.title}
+              </a>
+            </h2>
+            {entry.data.description ? (
+              <p class="mb-4 text-text line-clamp-3">{entry.data.description}</p>
+            ) : (
+              <p class="mb-4 text-text line-clamp-3">{plainify(entry.body ?? "")}</p>
+            )}
+            <a href={entry._url} class="font-semibold text-primary transition hover:text-dark">
+              阅读内容
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
